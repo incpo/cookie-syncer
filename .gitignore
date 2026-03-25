@@ -1,2 +1,4 @@
 .env
 web-ext-artifacts/
+server/rooms.json
+extension/.amo-upload-uuid
