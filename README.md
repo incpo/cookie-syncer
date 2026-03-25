@@ -50,15 +50,15 @@ SERVER_SECRET=your-secret bun run index.ts
 
 #### Option A: Install a signed .xpi (permanent)
 
-```bash
-# Build the addon
-./build-firefox.sh
+1. Get free API keys from [addons.mozilla.org](https://addons.mozilla.org/developers/addon/api/key/)
 
-# Sign it via AMO (requires free API keys from https://addons.mozilla.org/developers/addon/api/key/)
-AMO_JWT_ISSUER=your-key AMO_JWT_SECRET=your-secret ./sign-firefox.sh
-```
+2. Build and sign:
+   ```bash
+   ./build-firefox.sh
+   AMO_JWT_ISSUER=your-key AMO_JWT_SECRET=your-secret ./sign-firefox.sh
+   ```
 
-Drag the resulting `.xpi` from `web-ext-artifacts/` into Firefox, or go to `about:addons` → ⚙️ → **Install Add-on From File**.
+3. Install: drag the `.xpi` from `web-ext-artifacts/` into Firefox, or go to `about:addons` → ⚙️ → **Install Add-on From File**
 
 #### Option B: Temporary load (development)
 
