@@ -87,6 +87,7 @@ Receivers can click **Sync Now** or enable **Auto-sync** to pull cookies every 2
 ## Roadmap
 
 - [ ] **Separate parent domain cookie sharing** — When sharing cookies for `sub.example.com`, cookies scoped to `example.com` are included automatically. Add an option to control whether parent domain cookies are shared alongside subdomain-specific ones.
+- [ ] **Add screenshots and video tutorials** — Record GIFs/videos for each setup step and replace the placeholders in the README.
 
 ## Security
 
