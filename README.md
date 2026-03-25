@@ -84,6 +84,10 @@ Receivers can click **Sync Now** or enable **Auto-sync** to pull cookies every 2
 └── docker-compose.yml
 ```
 
+## Roadmap
+
+- [ ] **Separate parent domain cookie sharing** — When sharing cookies for `sub.example.com`, cookies scoped to `example.com` are included automatically. Add an option to control whether parent domain cookies are shared alongside subdomain-specific ones.
+
 ## Security
 
 - Cookies are encrypted with AES-256-GCM before leaving the browser
