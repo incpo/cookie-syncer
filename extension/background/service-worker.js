@@ -5,6 +5,7 @@ const HEARTBEAT_MINUTES = 180;
 const AUTO_SYNC_MINUTES = 2;
 const PBKDF2_ITERATIONS = 600000;
 const DEBOUNCE_MS = 5000;
+let cookieListenerActive = false;
 
 const CONFIG_DEFAULTS = {
   serverUrl: "",
@@ -321,8 +322,9 @@ async function startSync() {
   await chrome.alarms.clearAll();
 
   if (cfg.role === "exit_node") {
-    if (!chrome.cookies.onChanged.hasListener(onCookieChanged)) {
+    if (!cookieListenerActive) {
       chrome.cookies.onChanged.addListener(onCookieChanged);
+      cookieListenerActive = true;
     }
     chrome.alarms.create("heartbeat", { periodInMinutes: HEARTBEAT_MINUTES });
     if (cfg.domains && cfg.domains.length > 0) pushCookies();
@@ -333,8 +335,9 @@ async function startSync() {
 
 async function stopSync() {
   await chrome.alarms.clearAll();
-  if (chrome.cookies.onChanged.hasListener(onCookieChanged)) {
+  if (cookieListenerActive) {
     chrome.cookies.onChanged.removeListener(onCookieChanged);
+    cookieListenerActive = false;
   }
   if (debounceTimer) { clearTimeout(debounceTimer); debounceTimer = null; }
 }

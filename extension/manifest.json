@@ -5,6 +5,12 @@
   "description": "Sync cookies between devices via encrypted cloud storage",
   "permissions": ["cookies", "storage", "alarms"],
   "host_permissions": ["<all_urls>"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "cookie-sync@incpo.github.io",
+      "strict_min_version": "121.0"
+    }
+  },
   "background": {
     "service_worker": "background/service-worker.js",
     "scripts": ["background/service-worker.js"]

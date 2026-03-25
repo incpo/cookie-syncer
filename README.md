@@ -35,11 +35,41 @@ SERVER_SECRET=your-secret bun run index.ts
 
 ### 2. Install the Extension
 
+<details>
+<summary><strong>Chrome</strong></summary>
+
 1. Open `chrome://extensions`
 2. Enable **Developer mode**
 3. Click **Load unpacked** → select the `extension/` folder
 
-<!-- ![Install extension](assets/install-extension.png) -->
+<!-- ![Install Chrome extension](assets/install-extension-chrome.png) -->
+</details>
+
+<details>
+<summary><strong>Firefox</strong></summary>
+
+#### Option A: Install a signed .xpi (permanent)
+
+```bash
+# Build the addon
+./build-firefox.sh
+
+# Sign it via AMO (requires free API keys from https://addons.mozilla.org/developers/addon/api/key/)
+AMO_JWT_ISSUER=your-key AMO_JWT_SECRET=your-secret ./sign-firefox.sh
+```
+
+Drag the resulting `.xpi` from `web-ext-artifacts/` into Firefox, or go to `about:addons` → ⚙️ → **Install Add-on From File**.
+
+#### Option B: Temporary load (development)
+
+```bash
+npx web-ext run --source-dir extension/
+```
+
+This launches Firefox with the extension loaded. Hot-reloads on file changes.
+
+<!-- ![Install Firefox extension](assets/install-extension-firefox.png) -->
+</details>
 
 ### 3. Create a Room (Exit Node)
 
@@ -74,13 +104,15 @@ Receivers can click **Sync Now** or enable **Auto-sync** to pull cookies every 2
 ## Project Structure
 
 ```
-├── extension/          # Chrome extension (Manifest V3)
+├── extension/          # Browser extension (Chrome + Firefox, Manifest V3)
 │   ├── background/     # Service worker — crypto, sync logic
 │   ├── popup/          # Extension popup UI
 │   └── manifest.json
 ├── server/             # Bun + Elysia API server
 │   ├── index.ts
 │   └── Dockerfile
+├── build-firefox.sh    # Build Firefox .xpi
+├── sign-firefox.sh     # Sign via AMO for permanent install
 └── docker-compose.yml
 ```
 
@@ -88,7 +120,7 @@ Receivers can click **Sync Now** or enable **Auto-sync** to pull cookies every 2
 
 - [ ] **Separate parent domain cookie sharing** — When sharing cookies for `sub.example.com`, cookies scoped to `example.com` are included automatically. Add an option to control whether parent domain cookies are shared alongside subdomain-specific ones.
 - [ ] **Add screenshots and video tutorials** — Record GIFs/videos for each setup step and replace the placeholders in the README.
-- [ ] **Separate Chrome and Firefox installation guides** — Split browser-specific steps into dedicated sections with tailored instructions for each browser.
+- [x] **Separate Chrome and Firefox installation guides** — Split browser-specific steps into dedicated sections with tailored instructions for each browser.
 
 ## Security
 
