@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab active" data-tab="thisSite">This Site</button>
+    <button class="tab" data-tab="shared">Shared</button>
+    <button class="tab" data-tab="connect">Connect</button>
+  </div>
+
+  <!-- Tab 1: This Site -->
+  <div id="thisSite" class="tab-content active">
+    <!-- No room configured -->
+    <div id="tsNoRoom" hidden>
+      <div class="empty-state">
+        <p>No room configured yet.</p>
+        <p class="hint">Go to the <strong>Connect</strong> tab to create or join a room.</p>
+      </div>
+    </div>
+
+    <!-- Exit node view -->
+    <div id="tsExitNode" hidden>
+      <div class="site-header">
+        <img id="tsFavicon" class="favicon-lg" src="" alt="">
+        <span id="tsDomain" class="domain-lg"></span>
+      </div>
+
+      <div id="tsSharing" hidden>
+        <div class="badge success">Sharing</div>
+        <button id="btnShareAccess" class="primary">Copy Share String</button>
+        <button id="btnRemoveDomain" class="danger">Stop Sharing This Site</button>
+      </div>
+
+      <div id="tsNotSharing" hidden>
+        <button id="btnAddDomain" class="primary">Share This Site's Cookies</button>
+      </div>
+
+      <div id="tsMessage" class="message" hidden></div>
+    </div>
+
+    <!-- Receiver view -->
+    <div id="tsReceiver" hidden>
+      <div class="site-header">
+        <img id="tsRcFavicon" class="favicon-lg" src="" alt="">
+        <span id="tsRcDomain" class="domain-lg"></span>
+      </div>
+
+      <div id="tsRcSynced" hidden>
+        <div class="badge info">Receiving</div>
+      </div>
+
+      <div id="tsRcNotSynced" hidden>
+        <p class="hint">This domain is not in the shared list. The exit node hasn't added it.</p>
+      </div>
+
+      <div id="tsRcMessage" class="message" hidden></div>
+    </div>
+
+    <!-- Status bar (bottom) -->
+    <div id="tsStatus" class="status-bar" hidden>
+      <div class="info"><span class="label">Role:</span><span id="tsRole" class="value"></span></div>
+      <div class="info"><span class="label">Domains:</span><span id="tsDomainCount" class="value"></span></div>
+      <div class="info"><span class="label">Last sync:</span><span id="tsLastSync" class="value"></span></div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Shared List -->
+  <div id="shared" class="tab-content">
+    <div id="sharedList" class="domain-list"></div>
+    <div id="sharedEmpty" class="empty-state" hidden>
+      <p>No domains shared yet.</p>
+      <p class="hint">Go to any website and use the <strong>This Site</strong> tab to add it.</p>
+    </div>
+  </div>
+
+  <!-- Tab 3: Connect -->
+  <div id="connect" class="tab-content">
+    <!-- No room -->
+    <div id="cnSetup" hidden>
+      <h3>Create a Room</h3>
+      <div class="section">
+        <label>Server URL</label>
+        <input type="text" id="serverUrl" value="http://localhost:3456">
+      </div>
+      <div class="section">
+        <label>Server Secret</label>
+        <input type="password" id="serverSecret" placeholder="Leave empty if no auth">
+      </div>
+      <button id="btnCreate" class="primary">Create Room (become exit node)</button>
+
+      <hr>
+
+      <h3>Or Join a Room</h3>
+      <div class="section">
+        <label>Share String</label>
+        <input type="text" id="shareString" placeholder="Paste share string here">
+      </div>
+      <div class="section">
+        <label>Server Secret</label>
+        <input type="password" id="joinServerSecret" placeholder="Leave empty if no auth">
+      </div>
+      <button id="btnJoin">Join Room (become receiver)</button>
+
+      <div id="cnError" class="error" hidden></div>
+    </div>
+
+    <!-- Exit node connected -->
+    <div id="cnExitNode" hidden>
+      <div class="badge success">Exit Node</div>
+      <div class="info"><span class="label">Server:</span><span id="cnServer" class="value"></span></div>
+      <div class="info"><span class="label">Room:</span><span id="cnRoom" class="value"></span></div>
+
+      <button id="btnCopyShare" class="primary">Copy Share String</button>
+      <button id="btnSyncEn">Sync Now</button>
+      <button id="btnLeaveEn" class="danger">Leave Room</button>
+
+      <div id="cnEnMessage" class="message" hidden></div>
+    </div>
+
+    <!-- Receiver connected -->
+    <div id="cnReceiver" hidden>
+      <div class="badge info">Receiver</div>
+      <div class="info"><span class="label">Server:</span><span id="cnRcServer" class="value"></span></div>
+      <div class="info"><span class="label">Room:</span><span id="cnRcRoom" class="value"></span></div>
+
+      <div class="toggle-row">
+        <label for="autoSyncToggle">Auto-sync (every 2 min)</label>
+        <input type="checkbox" id="autoSyncToggle">
+      </div>
+
+      <button id="btnSyncRc" class="primary">Sync Now</button>
+      <button id="btnLeaveRc" class="danger">Leave Room</button>
+
+      <div id="cnRcMessage" class="message" hidden></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal-overlay" hidden>
+    <div class="modal">
+      <div id="modalTitle" class="modal-title"></div>
+      <div id="modalBody" class="modal-body"></div>
+      <div class="modal-actions">
+        <button id="modalCancel" class="modal-btn">Cancel</button>
+        <button id="modalConfirm" class="modal-btn primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

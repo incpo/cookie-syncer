@@ -1,0 +1,16 @@
+name: cookie-sync
+
+services:
+  server:
+    build: ./server
+    restart: unless-stopped
+    ports:
+      - "3456:3456"
+    volumes:
+      - cookie-data:/app/data
+    environment:
+      DB_PATH: /app/data/rooms.json
+      SERVER_SECRET: ${SERVER_SECRET}
+
+volumes:
+  cookie-data:
