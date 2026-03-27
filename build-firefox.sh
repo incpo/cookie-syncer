@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")/extension"
+SCRIPT_DIR="$(dirname "$0")"
+
+if [ -f "$SCRIPT_DIR/.env" ]; then
+  set -a
+  source "$SCRIPT_DIR/.env"
+  set +a
+fi
+
+cd "$SCRIPT_DIR/extension"
 
 npx web-ext build \
   --overwrite-dest \

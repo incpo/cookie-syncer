@@ -343,9 +343,7 @@ $("btnLeaveRc").addEventListener("click", async () => {
 
 // ─── Persistent Inputs ────────────────────────────────────────────
 // Save to local storage (survives popup close)
-const LOCAL_INPUTS = ["serverUrl", "shareString"];
-// Save to session storage (cleared on browser close — secrets)
-const SESSION_INPUTS = ["serverSecret", "joinServerSecret"];
+const LOCAL_INPUTS = ["serverUrl", "shareString", "serverSecret", "joinServerSecret"];
 
 async function restoreInputs() {
   const local = await chrome.storage.local.get(LOCAL_INPUTS.map((id) => `input_${id}`));
@@ -353,22 +351,11 @@ async function restoreInputs() {
     const saved = local[`input_${id}`];
     if (saved !== undefined && saved !== "") $(id).value = saved;
   }
-  const session = await chrome.storage.session.get(SESSION_INPUTS.map((id) => `input_${id}`));
-  for (const id of SESSION_INPUTS) {
-    const saved = session[`input_${id}`];
-    if (saved !== undefined && saved !== "") $(id).value = saved;
-  }
 }
 
 for (const id of LOCAL_INPUTS) {
   $(id).addEventListener("input", () => {
     chrome.storage.local.set({ [`input_${id}`]: $(id).value });
-  });
-}
-
-for (const id of SESSION_INPUTS) {
-  $(id).addEventListener("input", () => {
-    chrome.storage.session.set({ [`input_${id}`]: $(id).value });
   });
 }
 

@@ -11,15 +11,12 @@ const CONFIG_DEFAULTS = {
   serverUrl: "",
   roomId: "",
   secret: "",
+  serverSecret: "",
   role: "",
   autoSync: false,
   lastSyncTs: 0,
   domains: [],
   domainHashes: {},
-};
-
-const SESSION_DEFAULTS = {
-  serverSecret: "",
 };
 
 // ─── Crypto ───────────────────────────────────────────────────────
@@ -94,29 +91,15 @@ function updateRoom(serverUrl, roomId, data, token) { return apiRequest("PUT", `
 
 // ─── Config ───────────────────────────────────────────────────────
 async function getConfig() {
-  const [local, session] = await Promise.all([
-    chrome.storage.local.get(CONFIG_DEFAULTS),
-    chrome.storage.session.get(SESSION_DEFAULTS),
-  ]);
-  return { ...local, ...session };
+  return chrome.storage.local.get(CONFIG_DEFAULTS);
 }
 
 async function saveConfig(partial) {
-  const sessionKeys = Object.keys(SESSION_DEFAULTS);
-  const sessionData = {};
-  const localData = {};
-  for (const [k, v] of Object.entries(partial)) {
-    if (sessionKeys.includes(k)) sessionData[k] = v;
-    else localData[k] = v;
-  }
-  const ops = [];
-  if (Object.keys(localData).length) ops.push(chrome.storage.local.set(localData));
-  if (Object.keys(sessionData).length) ops.push(chrome.storage.session.set(sessionData));
-  await Promise.all(ops);
+  await chrome.storage.local.set(partial);
 }
 
 async function clearConfig() {
-  await Promise.all([chrome.storage.local.clear(), chrome.storage.session.clear()]);
+  await chrome.storage.local.clear();
 }
 
 // ─── Cookie Manager ──────────────────────────────────────────────
